@@ -2,9 +2,9 @@ package com.hyh.rxjavademos;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 
 public class MainActivity extends Activity {
@@ -13,14 +13,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final String tag="hhh";
-        Observable observable = Observable.create(new Observable.OnSubscribe() {
+
+
+        Observable.create(new Observable.OnSubscribe<Object>() {
             @Override
-            public void call(Object o) {
-               Log.d(tag,"call"+o);
+            public void call(Subscriber<? super Object> subscriber) {
+                subscriber.onNext("Hello world");
             }
-        });
-        Subscriber<String> subscriber = new Subscriber<String>() {
+        }
+        ).subscribe(new Observer() {
             @Override
             public void onCompleted() {
 
@@ -32,11 +33,11 @@ public class MainActivity extends Activity {
             }
 
             @Override
-            public void onNext(String o) {
-                Log.d(tag,"hello world" );
+            public void onNext(Object o) {
+
             }
-        };
-        observable.subscribe(subscriber);
+        });
+
     }
 
 
